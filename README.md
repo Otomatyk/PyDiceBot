@@ -108,3 +108,6 @@ Par exemple :
 
 Dice Engine a était conçu pour un bot discord, si le message est plus long que 2.000 Char (La limite de discord), ce message d'erreur s'affiche, pour régler ce problème il faut supprimer l'une des dèrnières ligne de dice_engin_core.py, à vous de la trouvez !
 
+## C'est quoi !sr ?
+
+C'est une fonctionalité en cours de création, qui permet à chaque utilisateur discord de faire !sr pour simplifier l'affichage des lancés de dès pour le Jeux De Rôle Shadworun
