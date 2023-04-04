@@ -56,7 +56,7 @@ par exemple :
 Avec L un même élément peut être choisis plusieurs fois, mais ce n'est pas le cas avec U :
 ```!2u Je ne peux être choisis qu'une seule fois,Moi aussi,De même```
 
-#Variantes de U et L
+### Variantes de U et L
 
 Il est aussi possible de remplacer les virgules par des points-virgules, ou de mixer les deux !
 ```!1l Virgule,Point-Virgule;Troisième élément``` 
@@ -66,7 +66,7 @@ Ou de mettre des paranthèses/crochets
 
 ## Appliquer une opération sur chaque dès
 
-# Condition
+### Condition
 
 Pour comprendre le reste du chapitre il faut savoir comment écrire des conditions :
 ```>6``` Est True si le dé est supérieur à 6
@@ -74,7 +74,7 @@ Pour comprendre le reste du chapitre il faut savoir comment écrire des conditio
 ```!6``` Est True si le dé est different de 6
 ```=6``` Est True si le dé est égal à 6
 
-# (B)ooléan, est ce que ce dè respecte cette condition ?
+### (B)ooléan, est ce que ce dè respecte cette condition ?
 
 Avec **B**ooléean on peux savoir quels sont les dès qui respectent la condition choisis :
 ```!15d6b(>4)```
@@ -82,22 +82,22 @@ Cette commande renvoira une liste de True et de False, selon si le dès est sup�
 
 La somme sera égale au  nombre de dès respéctant la condition
 
-# (R)elancer, relance le dès si la condition est respéctée
+### (R)elancer, relance le dès si la condition est respéctée
 
 Si la condition est respéctée, le dè sera relancer est son nouveau résultat ajouté à la somme (L'ancien résultat sera ignoré) :
 ```!15d6r(=1)```
 
-# (G)arder, le filtre
+### (G)arder, le filtre
 
 Seulements les dès respéctant la condition seront gardés dans le résultat final :
 ```!100d500g(<128)``` Enlévra tous les dès supérieur ou égal à 128
 
-# Relancer et (A)jouter, le cousin de explode
+### Relancer et (A)jouter, le cousin de explode
 
 Comme le **R**elancer, mais agis comme si le dè relancer en est un nouveau :
 ```!3d8a(=8)``` Est équivalent à ```!3e8```
 
-# Keep et G,R,A,B
+### Keep et G,R,A,B
 
 Quand on utilise un Keep et un des GRAB dans le même lancé il faut faire attention à l'ordre !
 Par exemple :
