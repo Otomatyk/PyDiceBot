@@ -20,7 +20,6 @@ def exec_lancer_des(cmd):
 
     #D'abbord diviser les tokens et trouver l'ordes des opérateurs
     liste_token = split(RE_SPLIT_TOKEN, cmd)[1:]
-    # assert len(liste_token)%2 == 0, "Token manquant, trop d'opérateurs arithmétiques"
 
     #Puis les éxécuter
     lancer_des = []
@@ -174,7 +173,7 @@ def exec_commande(cmd):
 
     finally:
         if len(result) >= 2000:
-            return '```md\nMessage trop long```'
+            return '```md\nMessage trop long...```'
         else:
             return '```md\n{}```'.format(result)
 
