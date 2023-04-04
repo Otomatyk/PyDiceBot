@@ -5,7 +5,7 @@
 Voici la syntaxe pour un lancé de dès basique :
 ```! NOMBRE_DE_DES d NOMBRES_FACES```
 
-Par exemple, lancer huit dès de quatre faces chacun, il faut faire :
+Par exemple, pour lancer huit dès de quatre faces chacun, il faut faire :
 ```!8d4```
 
 Il est possible d'ommetre le nombre de dès, dans ce cas là, un seul dés sera lancer :
@@ -17,7 +17,7 @@ Cette commande lancera un seul dè à six face
 Il est aussi possible d'additioner/soustraire des lancés de dès (Ou des constantes) entre eux, il suffit d'utiliser le signe + et -, la somme sera afficher au début du résultat
 ```!d6+2d10-8``` Lancera d'abbod un dè de six, additionerra son résultat à la somme de deux dès de dix, puis vas soustraire le résultat de huit.
 
-Le résultat de chaque dès sera quand même afficher.
+Le résultat de chaque dès sera quand même afficher mais les constantes commenceront avec un souligné du bas
 
 ## Garder les meilleurs/pires résultats
 
@@ -63,3 +63,48 @@ Il est aussi possible de remplacer les virgules par des points-virgules, ou de m
 
 Ou de mettre des paranthèses/crochets
 ```!1l(Fusion;De tout,Ce qui,Est Possible]``` 
+
+## Appliquer une opération sur chaque dès
+
+# Condition
+
+Pour comprendre le reste du chapitre il faut savoir comment écrire des conditions :
+```>6``` Est True si le dé est supérieur à 6
+```<6``` Est True si le dé est inférieur à 6
+```!6``` Est True si le dé est different de 6
+```=6``` Est True si le dé est égal à 6
+
+# (B)ooléan, est ce que ce dè respecte cette condition ?
+
+Avec **B**ooléean on peux savoir quels sont les dès qui respectent la condition choisis :
+```!15d6b(>4)```
+Cette commande renvoira une liste de True et de False, selon si le dès est supérieur ou inférieur à 4
+
+La somme sera égale au  nombre de dès respéctant la condition
+
+# (R)elancer, relance le dès si la condition est respéctée
+
+Si la condition est respéctée, le dè sera relancer est son nouveau résultat ajouté à la somme (L'ancien résultat sera ignoré) :
+```!15d6r(=1)```
+
+# (G)arder, le filtre
+
+Seulements les dès respéctant la condition seront gardés dans le résultat final :
+```!100d500g(<128)``` Enlévra tous les dès supérieur ou égal à 128
+
+# Relancer et (A)jouter, le cousin de explode
+
+Comme le **R**elancer, mais agis comme si le dè relancer en est un nouveau :
+```!3d8a(=8)``` Est équivalent à ```!3e8```
+
+# Keep et G,R,A,B
+
+Quand on utilise un Keep et un des GRAB dans le même lancé il faut faire attention à l'ordre !
+Par exemple :
+```!10d100g(<50)k1``` Aura comme résultat le dè plus grand dè à 50, tandis que
+```!10d100k1g(<50)``` Aura comme résultat le meilleur dé (s'il est inférieur à 50, sinon il n'y aura aucun dès gardés)
+
+## J'ai l'erreur "Message trop long", que faire ?
+
+Dice Engine a était conçu pour un bot discord, si le message est plus long que 2.000 Char (La limite de discord), ce message d'erreur s'affiche, pour régler ce problème il faut supprimer l'une des dèrnières ligne de dice_engin_core.py, à vous de la trouvez !
+
