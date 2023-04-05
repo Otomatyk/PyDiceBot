@@ -1,7 +1,8 @@
 import re
 from random import randint, choices, shuffle
-from re import search, split
+from re import search, split, match
 from dice_engine_l_et_u import exec_l, exec_u
+from dice_engine_macro import exec_cmd_macro
 
 RE_FORMAT_TOKEN_VALIDE = re.compile("[0-9]*(d|e)[0-9]+.*")
 RE_N_DES = re.compile("([0-9]+)(?=(d|e))")
@@ -13,6 +14,11 @@ RE_MAP = re.compile("(g|r|a|b)\(.[0-9]+(?=\))")
 
 RE_OPS = re.compile("(?<!k)[\+\-]")
 RE_SPLIT_TOKEN = re.compile("(\+|(?<!k)\-)")
+
+RE_FORMAT_U = re.compile("[0-9]+u.+")
+RE_FORMAT_L = re.compile("[0-9]+l.+")
+
+MAX_MESSAGE_LEN = 2000
 
 def exec_lancer_des(cmd): 
     "Recoie la commande nettoyée"
@@ -139,17 +145,22 @@ def appliquer_map(lancer_des, action_map, condition_map, n_condition_map, n_face
 
     return list(lancer_des)
 
-def exec_commande(cmd):
+def exec_commande(cmd, user_id=1):
     "Prend en entré la commande (avec le point d'exclamation), et renvoie le message à afficher"
     cmd = cmd[1:]
 
     try :
-        if "u" in cmd:
-            result = "Résultat du tirage : "+str(exec_u(cmd))
+        if match(RE_FORMAT_U, cmd):
+            result = exec_u(cmd)
 
-        elif "l" in cmd:
-            result = "Résultat du tirage : "+str(exec_l(cmd))
-            
+        elif match(RE_FORMAT_L, cmd):
+            result = exec_l(cmd)
+        
+        elif cmd[0] == "!":
+            result = exec_cmd_macro(cmd, user_id)
+            if type(result) == tuple:
+                somme, des = exec_lancer_des(result[0])
+                result = '# {}\n{} {}'.format(somme, cmd, des)
         else:
             cmd = cmd.lower()
             cmd = cmd.replace(" ", "" )
@@ -160,20 +171,17 @@ def exec_commande(cmd):
     except AssertionError as erreur:
         result = 'Erreur : ' + erreur.args[0]
 
-    except Exception as erreur:
+    except EOFError as erreur:
         match erreur.args[0]:
             case "'NoneType' object has no attribute 'group'":
                 result = "Erreur indéterminée, possibles causes : \n\tLes divisions et multiplications ne sont pas prises en comptes"
-
-            case "low >= high":
-                result = "Erreur : Impossible de lancer des/un dè(s) à une seule face"
             
             case _:
                 result = 'Erreur indéterminée, cause : '+ erreur.args[0]
 
     finally:
-        if len(result) >= 2000:
-            return '```md\nMessage trop long...```'
+        if len(result) >= MAX_MESSAGE_LEN:
+            return '```md\nMessage trop long```'
         else:
             return '```md\n{}```'.format(result)
 
