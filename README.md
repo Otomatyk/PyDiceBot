@@ -1,5 +1,9 @@
 # Documentation de Dice Engine
 
+## L'intérpréteur
+
+Si vous lancer dice_engine_core.py vous allez vous retrouver devant une ligne de commande commencant par un $, vous pouvez essayer n'importe quelle commande à condition de ne pas mettre le point d'exclamation (il faut le mettre seulement si vous lancez la commande depuis discord)
+
 ## Les bases
 
 Voici la syntaxe pour un lancé de dès basique :
@@ -57,6 +61,15 @@ par exemple :
 Avec L un même élément peut être choisis plusieurs fois, mais ce n'est pas le cas avec U :
 ```!2u Je ne peux être choisis qu'une seule fois,Moi aussi,De même```
 
+Si vous voulez que peut import le tirage un message soit afficher, vous pouvez le mettre après une diése à la fin du message :
+
+```!1l oui,non #Devrais-je aller à gauche ?``` 
+Cette commande retournera :
+```
+# Devrais-je aller à gauche ?
+Oui/Non
+```
+
 ### Variantes de U et L
 
 Il est aussi possible de remplacer les virgules par des points-virgules, ou de mixer les deux !
@@ -105,9 +118,34 @@ Par exemple :
 ```!10d100g(<50)k1``` Aura comme résultat le dè plus grand dè à 50, tandis que
 ```!10d100k1g(<50)``` Aura comme résultat le meilleur dé (s'il est inférieur à 50, sinon il n'y aura aucun dès gardés).
 
+## Les macros
+
+Si vous en avez marre de taper régulierment la même commande complexe, vous devrez utiliser une macro !
+Pour en rajouter une il faut faire (Le nom ne peut contenir que des caractères alphanumériques et des underscores) :
+```!!add NOM_DE_LA_MACRO LANCER_MACRO ```
+(Mettez qu'un seul point d'exclamation si vous êtes sur l'interpréteur)
+
+Pour l'éxécuter :
+```!!NOM_DE_LA_MACRO```
+
+Pour en supprimer :
+```!! del NOM_DE_LA_MACRO```
+
+Et pour obtenir la liste des macros enregistrées :
+```!!get```
+
+Par exemple (Le nom choisit est plutôt long pour que ce soit comprenhsible) :
+```!!add dm_attaque 4d8k3+7```
+```!!dm_attaque```
+```!!del dm_attaque```
+
+Pour eviter de surcharger la RAM du serveur, il y a une limite de 10 Macro / Utilisateur, pour la modifier, changer la valeur de MAX_MACRO_PER_USER dans dice_engine_macro.py
+
+# FAQ
+
 ## J'ai l'erreur "Message trop long", que faire ?
 
-Dice Engine a était conçu pour un bot discord, si le message est plus long que 2.000 Char (La limite de discord), ce message d'erreur s'affiche, pour régler ce problème il faut supprimer l'une des dèrnières ligne de dice_engin_core.py, à vous de la trouvez !
+Dice Engine a était conçu pour un bot discord, si le message est plus long que 2.000 Char (La limite de discord), ce message d'erreur s'affiche, pour régler ce problème il faut changer la constante MAX_MESSAGE_LEN dans dice_engine_core.py
 
 ## C'est quoi !sr ?
 
