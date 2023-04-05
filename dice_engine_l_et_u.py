@@ -1,33 +1,40 @@
-from random import randint, choice
+from random import randint, choices
 import re
 
-REGEX_SEPARATORS = re.compile("[,;]")
-REGEX_ELEMENTS = re.compile("(?<=(l|u).)[^$]+")
+RE_SEPARATORS = re.compile("[,;]")
+RE_ELEMENTS = re.compile("(?<=(l|u).)[^$\#]+")
+RE_COMMENTAIRE = re.compile("\#.+(?=$)")
 
 def trouver_elements_et_n_fois(cmd:str) -> tuple[list[str], int]:
-    elements = re.search(REGEX_ELEMENTS, cmd)
+    elements = re.search(RE_ELEMENTS, cmd)
     assert elements != None, "Syntaxe invalide, aucun élément n'est présent"
 
     nombre_fois = cmd[:elements.start()-2]
-    assert nombre_fois.isdigit(), "Syntaxe invalide, le nombre d'éléments choisis est inférieur à 1"
+    assert nombre_fois.isdigit(), "Commande invalide, le nombre d'élément choisis est invalide"
     nombre_fois = int(nombre_fois)
 
-    elements = re.split(REGEX_SEPARATORS, elements.group())
+    commentaire = re.search(RE_COMMENTAIRE, cmd)
+    if commentaire:
+        commentaire = commentaire.group()
+    else:
+        commentaire = ""
 
+    elements = re.split(RE_SEPARATORS, elements.group())
 
-    assert nombre_fois >= 1, "commande invalide, le nombre d'élément choisis est invalide"
-    assert bool(elements) == True, "commande invalide, aucun élément n'est présent"
+    assert nombre_fois >= 1, "Syntaxe invalide, le nombre d'éléments choisis est inférieur à 1"
 
-    return elements, nombre_fois
+    return elements, nombre_fois, commentaire
 
-def exec_l(cmd:str) -> list[str]:
-    elements, nombre_fois = trouver_elements_et_n_fois(cmd)
-        
-    return [choice(elements) for i in range(nombre_fois)]
+def formater_resultat(commentaire, elements):
+    return "Résultat du tirage : \n{0}\n{1}".format(commentaire, str(elements)[1:-1])
 
-def exec_u(cmd:str) -> list[str]:
-    elements, nombre_fois = trouver_elements_et_n_fois(cmd)
+def exec_l(cmd:str):
+    elements, nombre_fois, commentaire = trouver_elements_et_n_fois(cmd)      
+    return formater_resultat(commentaire, choices(elements, k=nombre_fois))
 
+def exec_u(cmd:str):
+    elements, nombre_fois, commentaire = trouver_elements_et_n_fois(cmd)
+    print(" ASSRT")
     assert nombre_fois <= len(elements), "commande invalide, le nombre d'éléments choisis est supérieur au nombre de choix possible"
     
     choix = []
@@ -36,4 +43,4 @@ def exec_u(cmd:str) -> list[str]:
         choix.append(elements[index])
         del elements[index]
 
-    return choix
+    return formater_resultat(commentaire, choix)
