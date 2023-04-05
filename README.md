@@ -32,7 +32,7 @@ Pour garder les meilleurs résultats d'un lancer de dès, il faut utiliser l'op�
 Pour garder les pires résultats d'un lancé de dès il faut utiliser des nombres négatifs :
 ```!100d100k-2```  gardera les deux résultats les plus bas parmis cent dès de cent.
 
-## Relancer si le dès a atteint son max
+## Relancer si les dès qui ont atteint leur max
 
 Si vous avez besoins de relancer tout les dès qui ont faire leur résultat maximal, c'est possible, pour ce faire replacer le **d** par un **e**. Comme :
 ```!15e6``` 
@@ -41,7 +41,7 @@ Il est impossible de lancer un dès Explode à une seule face.
 
 ## Majuscules et espaces
 
-Avant d'éxecuter la commande, toutes les lettres seront mises en minuscules, et les espaces seront supprimés. Ne vous souciez pas de ça.
+Avant d'éxecuter la commande, toutes les lettres seront mises en minuscules et les espaces seront supprimés. Ne vous souciez pas de ça.
 
 ## Trier les résultats
 
@@ -56,12 +56,12 @@ Si vous voulez trier les résultats de vos lancés de dès, utilisez l'opérateu
 Il existe deux commandes qui ne lancent pas de dès, mais qui permmettent de choisir au hasard des/un élement(s). Commençon par L, sa syntaxe est la suivante :
 ```! NOMBRE_D'ELEMENT_A_CHOISIR l ELEMENT1,ELEMENT2,ELEMENT3``` 
 par exemple :
-```!3L gauche,droite,10,20,40,100``` Retournera trois élements parmis la liste.
+```!3L gauche,droite,10,20,40,100``` Retournera trois élements parmis la liste donnée.
 
 Avec L un même élément peut être choisis plusieurs fois, mais ce n'est pas le cas avec U :
 ```!2u Je ne peux être choisis qu'une seule fois,Moi aussi,De même```
 
-Si vous voulez que peut import le tirage un message soit afficher, vous pouvez le mettre après une diése à la fin du message :
+Si vous voulez que peut importe le tirage un message soit afficher, vous pouvez le mettre après une diése à la fin du message :
 
 ```!1l oui,non #Devrais-je aller à gauche ?``` 
 Cette commande retournera :
@@ -90,7 +90,7 @@ Pour comprendre le reste du chapitre il faut savoir comment écrire des conditio
 
 ### (B)ooléan, est ce que ce dè respecte cette condition ?
 
-Avec **B**ooléean on peux savoir quels sont les dès qui respectent la condition choisis :
+Avec **B**ooléean on peux savoir quels sont les dès qui respectent la condition choisit :
 ```!15d6b(>4)```
 Cette commande renvoira une liste de True et de False, selon si le dès est supérieur ou inférieur à 4.
 
@@ -115,7 +115,7 @@ Comme le **R**elancer, mais agis comme si le dè relancer en est un nouveau :
 
 Quand on utilise un Keep et un des GRAB dans le même lancé il faut faire attention à l'ordre !
 Par exemple :
-```!10d100g(<50)k1``` Aura comme résultat le dè plus grand dè à 50, tandis que
+```!10d100g(<50)k1``` Aura comme résultat le plus grand dè inférieur à 50, tandis que
 ```!10d100k1g(<50)``` Aura comme résultat le meilleur dé (s'il est inférieur à 50, sinon il n'y aura aucun dès gardés).
 
 ## Les macros
