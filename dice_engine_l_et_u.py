@@ -1,4 +1,4 @@
-from random import randint, choices
+from random import randint, choices, sample
 import re
 
 RE_SEPARATORS = re.compile("[,;]")
@@ -37,10 +37,6 @@ def exec_u(cmd:str):
     print(" ASSRT")
     assert nombre_fois <= len(elements), "commande invalide, le nombre d'éléments choisis est supérieur au nombre de choix possible"
     
-    choix = []
-    for i in range(nombre_fois):
-        index = randint(0, len(elements)-1)
-        choix.append(elements[index])
-        del elements[index]
+    choix = sample(elements, nombre_fois)
 
     return formater_resultat(commentaire, choix)
