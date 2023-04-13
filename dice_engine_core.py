@@ -71,18 +71,20 @@ def exec_token(token):
                 lancer_des.append(des)
 
     #Keep
-    
-    keep = search(RE_KEEP, token)
-    if keep:
-        keep = int(keep.group())
-        lancer_des = appliquer_keep(lancer_des, keep)
+
+    if "k" in token:
+        keep = search(RE_KEEP, token)
+        if keep:
+            keep = int(keep.group())
+            lancer_des = appliquer_keep(lancer_des, keep)
 
     #Map
 
-    map_ = search(RE_MAP, token)
-    if map_:  
-        map_ = map_.group()
-        lancer_des = appliquer_map(lancer_des, map_[0], map_[2], int(map_[3:]), n_face+1)
+    if "(" in token:
+        map_ = search(RE_MAP, token)
+        if map_:  
+            map_ = map_.group()
+            lancer_des = appliquer_map(lancer_des, map_[0], map_[2], int(map_[3:]), n_face+1)
 
     #Sort
     if "s" in token:
@@ -187,6 +189,7 @@ def exec_commande(cmd, user_id=1):
 
 if __name__ == "__main__":
     cmd = 1
+    print("-*-*- DICE ENGINE -*-*-")
     while cmd != "quit":
         cmd = input("$ ")
         print( exec_commande("!"+cmd) )
