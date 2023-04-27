@@ -42,19 +42,13 @@ def exec_lancer_des(cmd):
             somme, lance = exec_token(token)
             lancer_des.extend(lance)
         
-        if op == "+":
-            somme_final += somme
-        else:
-            somme_final -= somme
+        somme_final = somme_final+somme if op == "+" else somme_final-somme
         
     return somme_final, lancer_des
 
 def exec_token(token):
     n_des = search(RE_N_DES, token)
-    if n_des: 
-        n_des = int(n_des.group())
-    else:
-        n_des = 1
+    n_des = int(n_des.group()) if n_des else 1
 
     n_face = search(RE_N_FACE, token)
     assert hasattr(n_face, "group"), "Syntaxe invalide, ll manque le nombre de faces"
@@ -66,12 +60,10 @@ def exec_token(token):
     if "e" in token:
         assert n_face > 1, "Utiliser Explode néssecite que le nombre de face soit supérieur à 1"
         for des in lancer_des:
-            while des == n_face:
-                des = randint(1, n_face)
-                lancer_des.append(des)
+            while lancer_des[-1] == n_face:
+                lancer_des.append( randint(1, n_face) )
 
     #Keep
-
     if "k" in token:
         keep = search(RE_KEEP, token)
         if keep:
@@ -79,7 +71,6 @@ def exec_token(token):
             lancer_des = appliquer_keep(lancer_des, keep)
 
     #Map
-
     if "(" in token:
         map_ = search(RE_MAP, token)
         if map_:  
