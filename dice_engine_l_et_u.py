@@ -26,6 +26,8 @@ def trouver_elements_et_n_fois(cmd:str) -> tuple[list[str], int]:
     return elements, nombre_fois, commentaire
 
 def formater_resultat(commentaire, elements):
+    if type(elements) == str and not elements.startswith(" "):
+        elements = " "+startswith
     return "Résultat du tirage : \n{0}\n{1}".format(commentaire, str(elements)[1:-1])
 
 def exec_l(cmd:str):
