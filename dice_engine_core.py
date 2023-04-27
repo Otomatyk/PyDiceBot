@@ -171,7 +171,9 @@ def exec_commande(cmd, user_id=1):
             
             case _:
                 result = 'Erreur indéterminée, cause : '+ erreur.args[0]
-
+    except exception as erreur:
+        result = 'Erreur indéterminée, cause : '+ erreur.args[0]
+   
     finally:
         if len(result) >= MAX_MESSAGE_LEN:
             return '```md\nMessage trop long```'
@@ -181,6 +183,6 @@ def exec_commande(cmd, user_id=1):
 if __name__ == "__main__":
     cmd = 1
     print("-*-*- DICE ENGINE -*-*-")
-    while cmd != "quit":
+    while cmd not in ("quit", "exit", "bye", "quitter"):
         cmd = input("$ ")
         print( exec_commande("!"+cmd) )
