@@ -181,6 +181,9 @@ def appliquer_map(lancer_des:Lancer_des, action_map:str, condition_map:Condition
 
 def exec_commande(cmd:int, user_id=1):
     "Prend en entré la commande (avec le point d'exclamation), et renvoie le message à afficher"
+    if cmd in ("!rank", "!levels"):
+        return ""
+    
     cmd = cmd[1:]
 
     try:
@@ -193,6 +196,7 @@ def exec_commande(cmd:int, user_id=1):
         elif cmd[0] == "!":
             result = exec_cmd_macro(cmd, user_id)
             if type(result) == tuple:
+                print("Resultat : ", result[0])
                 somme, des = exec_lancer_des(result[0])
                 result = f'# {somme}\n{cmd} {des}'
         else:
