@@ -20,7 +20,10 @@ RE_FORMAT_L = re.compile("[0-9]+l.+")
 
 MAX_MESSAGE_LEN = 2000
 
-def exec_lancer_des(cmd): 
+Lancer_des = list[int]
+Condition = str #">" | "<" | ">=" | "<=" | "!=" | "=="
+
+def exec_lancer_des(cmd:str) -> tuple[int, Lancer_des]: 
     "Recoie la commande nettoyée"
     cmd = "+"+cmd #Le premier lancé de dès rajouter forcement sa somme
 
@@ -46,7 +49,15 @@ def exec_lancer_des(cmd):
         
     return somme_final, lancer_des
 
-def exec_token(token):
+def exec_token(token:str) -> tuple[int, Lancer_des]:
+    """Execute un token (les tokens sont séparés de + et de - dans les lancer de dès)
+
+    Args:
+        token (str): le token a analyser et executer
+
+    Returns:
+       tuple[int, list[int]]: La somme du résultat et le lancé de dès
+    """
     n_des = search(RE_N_DES, token)
     n_des = int(n_des.group()) if n_des else 1
 
@@ -59,7 +70,7 @@ def exec_token(token):
     #Explode
     if "e" in token:
         assert n_face > 1, "Utiliser Explode néssecite que le nombre de face soit supérieur à 1"
-        for des in lancer_des:
+        for _ in lancer_des:
             while lancer_des[-1] == n_face:
                 lancer_des.append( randint(1, n_face) )
 
@@ -83,7 +94,16 @@ def exec_token(token):
 
     return sum(lancer_des), lancer_des
 
-def appliquer_keep(lancer_des, keep):
+def appliquer_keep(lancer_des:Lancer_des, keep:int) -> Lancer_des:
+    """Garde les meilleurs (+) ou les pires résultats (-) d'un lancé de dès, mélange le lancé après
+
+    Args:
+        lancer_des (list[int]): Le lancé de dès
+        keep (signed int): Les dès à garder. Avec un nombre négatif, garde les pires résultats
+
+    Returns:
+        list[int]: Le lancé de dès après keep
+    """
     if keep > 0:
         lancer_des_trier = sorted(lancer_des, reverse=True)
     else:
@@ -93,17 +113,38 @@ def appliquer_keep(lancer_des, keep):
     shuffle(lancer_des)
     return lancer_des
 
-def eval_condition_map(des ,condition, n_condition):
+def eval_condition_map(des:int, condition:Condition, n_condition:int) -> bool:
+    """Test si un dès respècte une condition
+
+    Args:
+        des (int): Le dès à tester
+        condition (Condition): La condition (>, <, ==, !=...ect)
+        n_condition (int): Le nombre à droite de l'opération
+
+    Returns:
+        bool: Le résultat du test
+    """
     return eval(str(des) +condition+ str(n_condition) )
                 
-def relancer(des ,condition, n_condition, n_face) :
+def relancer(des:int ,condition:Condition, n_condition:int, n_face:int) -> int:
+    """Relance le dès si la condition est vraie
+
+    Args:
+        des (int): _description_
+        condition (Condition): La condition (>, <, ==, !=...ect)
+        n_condition (int): Le nombre à droite du test
+        n_face (int): Le nombre de face du dès
+
+    Returns:
+        int: Le nouveau dès (ou l'ancien!)
+    """
 
     if eval_condition_map(des, condition, n_condition):
         return randint(1,n_face-1)
     else:
         return des
 
-def rajouter(lancer_des ,condition, n_condition, n_face):
+def rajouter(lancer_des:Lancer_des, condition:Condition, n_condition:int, n_face:int):
 
     def rajouter_si(des):
         if eval_condition_map(des, condition, n_condition):
@@ -112,7 +153,7 @@ def rajouter(lancer_des ,condition, n_condition, n_face):
     
     return map(rajouter_si, lancer_des)
     
-def appliquer_map(lancer_des, action_map, condition_map, n_condition_map, n_face):
+def appliquer_map(lancer_des:Lancer_des, action_map:str, condition_map:Condition, n_condition_map:int, n_face:int):
     fn_condition = lambda des:eval_condition_map(des, condition_map, n_condition_map)
 
     match condition_map:
@@ -138,11 +179,11 @@ def appliquer_map(lancer_des, action_map, condition_map, n_condition_map, n_face
 
     return list(lancer_des)
 
-def exec_commande(cmd, user_id=1):
+def exec_commande(cmd:int, user_id=1):
     "Prend en entré la commande (avec le point d'exclamation), et renvoie le message à afficher"
     cmd = cmd[1:]
 
-    try :
+    try:
         if match(RE_FORMAT_U, cmd):
             result = exec_u(cmd)
 
@@ -153,13 +194,13 @@ def exec_commande(cmd, user_id=1):
             result = exec_cmd_macro(cmd, user_id)
             if type(result) == tuple:
                 somme, des = exec_lancer_des(result[0])
-                result = '# {}\n{} {}'.format(somme, cmd, des)
+                result = f'# {somme}\n{cmd} {des}'
         else:
             cmd = cmd.lower()
             cmd = cmd.replace(" ", "" )
 
             somme, des = exec_lancer_des(cmd)
-            result = '# {}\n{} {}'.format(somme, cmd, des)
+            result = f'# {somme}\n{cmd} {des}'
 
     except AssertionError as erreur:
         result = 'Erreur : ' + erreur.args[0]
@@ -171,14 +212,14 @@ def exec_commande(cmd, user_id=1):
             
             case _:
                 result = 'Erreur indéterminée, cause : '+ erreur.args[0]
-    except exception as erreur:
+    except Exception as erreur:
         result = 'Erreur indéterminée, cause : '+ erreur.args[0]
    
     finally:
         if len(result) >= MAX_MESSAGE_LEN:
             return '```md\nMessage trop long```'
         else:
-            return '```md\n{}```'.format(result)
+            return f'```md\n{result}```'
 
 if __name__ == "__main__":
     cmd = 1
