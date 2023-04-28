@@ -139,7 +139,16 @@ Par exemple (Le nom choisit est plutôt long pour que ce soit comprenhsible) :
 ```!!dm_attaque```
 ```!!del dm_attaque```
 
-Pour eviter de surcharger la RAM du serveur, il y a une limite de 10 Macro / Utilisateur, pour la modifier, changer la valeur de MAX_MACRO_PER_USER dans dice_engine_macro.py
+### Macros avec parmaètre
+
+Il est possible de créer des macros avec un paramètre d'entré (comme une fonction mathématique), le résultat dépendra de ce paramètre.
+Pour en créer une, il faut faire comme pour une macro basique, mais en mettant un dollar $ là où le paramètre va, exemple :
+`!!add 3_des 3d$`. 
+Pour l'éxecuter il faut rajouter la paramètre après le nom de la macro : `!!3_des 5` sera equivalent à `!3d5`.
+Si aucune paramètre n'est fournit, les $ seront remplacer par 0
+
+---
+NOTE : Pour eviter de surcharger la RAM du serveur, il y a une limite de 10 Macro / Utilisateur, pour la modifier, changer la valeur de MAX_MACRO_PER_USER dans dice_engine_macro.py
 
 # FAQ
 
