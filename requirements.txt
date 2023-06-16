@@ -1,1 +1,1 @@
-discord == 2.1.0  #Seulement si vous utilisez dice_engine_discord.py
+discord >= 2.1.0  #Seulement si vous utilisez dice_engine_discord.py
