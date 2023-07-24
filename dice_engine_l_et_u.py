@@ -3,7 +3,6 @@ import re
 
 RE_SEPARATORS = re.compile("[,;]")
 RE_ELEMENTS = re.compile("(?<=(l|u).)[^$\#]+")
-RE_COMMENTAIRE = re.compile("\#.+(?=$)")
 
 def trouver_elements_et_n_fois(cmd:str) -> tuple[list[str], int]:
     elements = re.search(RE_ELEMENTS, cmd)
@@ -13,9 +12,8 @@ def trouver_elements_et_n_fois(cmd:str) -> tuple[list[str], int]:
     assert nombre_fois.isdigit(), "Commande invalide, le nombre d'élément choisis est invalide"
     nombre_fois = int(nombre_fois)
 
-    commentaire = re.search(RE_COMMENTAIRE, cmd)
-    if commentaire:
-        commentaire = commentaire.group()
+    if "#" in cmd:
+        commentaire = cmd[cmd.index("#"):]
     else:
         commentaire = ""
 
@@ -36,7 +34,6 @@ def exec_l(cmd:str):
 
 def exec_u(cmd:str):
     elements, nombre_fois, commentaire = trouver_elements_et_n_fois(cmd)
-    print(" ASSRT")
     assert nombre_fois <= len(elements), "commande invalide, le nombre d'éléments choisis est supérieur au nombre de choix possible"
     
     choix = sample(elements, nombre_fois)
